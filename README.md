@@ -55,18 +55,32 @@ En nuestro Árbol de Búsqueda Binaria (ABB), vamos a encontrar una estructura i
 
 Con lo dicho anteriormente acerca de los subárboles en un árbol general, los subárboles de un ABB también son ABB.
 
-Las principales operaciones que se pueden realizar en los árboles:
+<div align="center">
+<img width="80%" src="img/abb2.jpg">
+</div>
+
+A continuación se explican las operaciones insertar y quitar en un ABB.
+
+A la hora de insertar un elemento en el ABB, vamos a tener que crear un nodo para insertarlo en el ABB e ir comparandolo con los que ya están en el árbol, utilizando esta propiedad de menores a la izquierda y mayores a la derecha hasta llegar a la posición correcta del nodo. En caso de no existir elementos para comparar, el nuevo elemento pasa a ser el nodo raiz del árbol. 
+
+<div align="center">
+<img width="80%" src="img/insertar.jpg">
+</div>
+
+En cambio, cuando queremos quitar un elemento del ABB, hay que tener presentes varios casos. En el caso que se quiera quitar un nodo que tiene un solo hijo, al igual que cuando buscamos la posición para insertar, llegamos a su posición y lo eliminamos. Aquí no queda ningún nodo sin referencia. Pero ¿qué pasa si el que queremos eliminar tiene uno o dos hijos? En esos casos, quedan nodos sin referencia. Entonces veamos, si el nodo a eliminar tiene un solo hijo, tendremos que reasignar este al nodo superior respetando menor a izquierda y mayor a derecha. En el diagrama, queremos quitar el 20 que tiene dos hijos por lo cual vamos a buscar su predecesor inorder, que es el 19 (puede ser otro, depende de la implementación), para reemplazarlo. Si el predecesor inorder tiene hijos, estos se tienen que reacomodar, tienen que buscar nuevos padres para mantener la estructura del ABB y no perderse.
+
+
+<div align="center">
+<img width="80%" src="img/quitar.jpg">
+</div>
+
+Otras operaciones que se pueden realizar en los árboles:
  - Crear
  - Buscar
- - Quitar
- - Insertar
  - Recorrer
  - Destruir
 
 
-<div align="center">
-<img width="80%" src="img/abb.jpg">
-</div>
 
 En el árbol de ejemplo, si aplicamos los recorridos quedarían así:
 
@@ -75,13 +89,14 @@ En el árbol de ejemplo, si aplicamos los recorridos quedarían así:
 - Postorder: [5, 10, 45, 20, 53, 57, 90, 60, 55, 50] Obtenemos el orden de borrado del ABB.
 
 
+
 ## Complejidades 
 
 Ahora se analizan las principales operaciones que se pueden realizar con el ABB.
 
-- **Busqueda, inserción y eliminación: O(log(n))**. Al descender por niveles en el árbol, descartamos ramas hasta llegar al elemento deseado para buscar, eliminar o insertar. Esta eficiencia se mantiene cuando el árbol está balanceado, ya que no necesitamos recorrer todos los elementos. Sin embargo, si el árbol no está balanceado, en el peor de los casos, la complejidad sería O(n), ya que se degeneraría en una lista de nodos enlazados. Por lo tanto, la mejora fundamental que ofrece el árbol esta en la eficiencia de búsqueda.
+- **Busqueda, inserción y eliminación: O(log(n))**. Al descender por niveles en el árbol, descartamos ramas hasta llegar al elemento deseado para buscar, eliminar o insertar. Esta eficiencia se mantiene cuando el árbol está balanceado, ya que no necesitamos recorrer todos los elementos. Sin embargo, si el árbol no está balanceado, en el peor de los casos, la complejidad sería **O(n)**, ya que se degeneraría en una lista de nodos enlazados. Por lo tanto, la mejora fundamental que ofrece el árbol esta en la eficiencia de búsqueda.
 ###
-- **Creación y destrucción: O(1)**. No se debe recorrer nada, simplemente se ejecuta una instrucción.
+- **Creación: O(1)**. No se debe recorrer nada, simplemente se ejecuta una instrucción.
 ###
 
 ###
@@ -90,15 +105,16 @@ Ahora se analizan las principales operaciones que se pueden realizar con el ABB.
 
 - **Recorrer: O(n)**. En todos los recorridos explicados anteriormente se visitan todos los elementos, se recorre todo el árbol.
 
+- **Destruir: O(n)**. Se recorren todos los nodos del árbol.
+
 
 ## Implementación
 
-La implementación del ABB se llevó a cabo utilizando recursividad en la mayoría de las funciones para aprovechar su naturaleza recursiva y para practicar este enfoque. Para lograr esto las funciones como `abb_quitar`, `abb_insertar` o `abb_buscar`, entre otras, llaman a funciones auxiliares que se encargan de realizar las operaciones. Esto permitió trabajar a partir de nodos y no del árbol en sí, siempre utilizando el nodo raíz. En el caso de quitar elementos, debido a que se requeria del predecesor inorder al elemento a eliminar, se implementó una función aparte obtenerlo.
+La implementación del ABB se llevó a cabo utilizando recursividad en la mayoría de las funciones para aprovechar su naturaleza recursiva y para practicar este enfoque. Para lograr esto las funciones como `abb_quitar`, `abb_insertar` o `abb_buscar`, entre otras, llaman a funciones auxiliares que se encargan de realizar las operaciones. Esto permitió trabajar a partir de nodos y no del árbol en sí, siempre utilizando el nodo raíz. En el caso de quitar elementos, debido a que se requeria del predecesor inorder al elemento a eliminar, se implementó una función aparte para obtenerlo.
 
 La veces que se tenían que comparar dos elementos para tomar alguna decisión, se aprovecho el comparador que ya se proponía en la estructura del `abb_t`.
 
 Para el iterador interno `abb_con_cada_elemento` se implementaron funciones auxiliares para cada uno de los recorridos (preorder, inorder y postorder) de manera recursiva. Esto fue de gran utilidad a la hora de implementar la función `abb_recorrer` ya que reutilizó el iterador interno y de esta forma los recorridos. Aún así, se debió implementar una función para pasarle al iterador interno que fue `completar_vector`. En relación al vector, para facilitar la implementación se creó un `struct vector_t` para poder manejar sus atributos. 
-
 
 Por último, en `abb_destruir` se reutilizó la función `abb_destruir_todo` para simplificar el código.
 

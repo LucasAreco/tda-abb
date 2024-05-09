@@ -186,7 +186,7 @@ void *abb_buscar(abb_t *arbol, void *elemento)
 
 bool abb_vacio(abb_t *arbol)
 {
-	return (!arbol ||  !arbol->nodo_raiz || (abb_tamanio(arbol) == 0));
+	return (!arbol || !arbol->nodo_raiz || (abb_tamanio(arbol) == 0));
 }
 
 size_t abb_tamanio(abb_t *arbol)

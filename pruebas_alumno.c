@@ -47,51 +47,63 @@ void insertar_elementos_en_el_abb()
 	int numero_1 = 14;
 	int numero_2 = 5;
 	int numero_3 = 40;
-	int numero_4 = 35;
+	int numero_5 = 50;
+	int numero_6 = 3;
 
 	void *elemento_1 = &numero_1;
 	void *elemento_2 = &numero_2;
 	void *elemento_3 = &numero_3;
-	void *elemento_4 = &numero_4;
+	void *elemento_5 = &numero_5;
+	void *elemento_6 = &numero_6;
 
 	pa2m_afirmar(abb_insertar(nuevo_abb, elemento_1) == nuevo_abb,
-		     "Al insertar en un ABB vació, devuelve el mismo ABB.");
+		     "Al insertar en un ABB vacío, devuelve el mismo ABB.");
 	pa2m_afirmar(
 		abb_tamanio(nuevo_abb) == 1,
-		"Al insertar en un ABB vació se actualiza correctamente el tamaño del ABB.");
+		"Al insertar en un ABB vacío se actualiza correctamente el tamaño del ABB.");
 	pa2m_afirmar(abb_buscar(nuevo_abb, elemento_1) == elemento_1,
-		     "El elemento efectivamente esta insertado en el ABB.");
+		     "El elemento efectivamente está insertado en el ABB.");
 
 	pa2m_afirmar(abb_insertar(nuevo_abb, elemento_2) == nuevo_abb,
-		     "Al insertar en un ABB no vació, devuelve el mismo ABB.");
+		     "Al insertar en un ABB no vacío, devuelve el mismo ABB.");
 	pa2m_afirmar(
 		abb_tamanio(nuevo_abb) == 2,
-		"Al insertar en un ABB no vació se actualiza correctamente el tamaño del ABB.");
+		"Al insertar en un ABB no vacío se actualiza correctamente el tamaño del ABB.");
 	pa2m_afirmar(abb_buscar(nuevo_abb, elemento_2) == elemento_2,
-		     "El elemento efectivamente esta insertado en el ABB.");
+		     "El elemento efectivamente está insertado en el ABB.");
 
 	abb_insertar(nuevo_abb, elemento_2);
-
 	pa2m_afirmar(abb_buscar(nuevo_abb, elemento_2) == elemento_2,
 		     "Se puede insertar un elemento duplicado.");
 
 	pa2m_afirmar(
 		abb_insertar(nuevo_abb, elemento_3) == nuevo_abb,
-		"Al insertar otro elemento en un ABB no vació, devuelve el mismo ABB.");
+		"Al insertar otro elemento en un ABB no vacío, devuelve el mismo ABB.");
 	pa2m_afirmar(
 		abb_tamanio(nuevo_abb) == 4,
-		"Al insertar en un ABB no vació se actualiza correctamente el tamaño del ABB.");
+		"Al insertar en un ABB no vacío se actualiza correctamente el tamaño del ABB.");
 	pa2m_afirmar(abb_buscar(nuevo_abb, elemento_3) == elemento_3,
-		     "El elemento efectivamente esta insertado en el ABB.");
+		     "El elemento efectivamente está insertado en el ABB.");
 
 	pa2m_afirmar(
-		abb_insertar(nuevo_abb, elemento_4) == nuevo_abb,
-		"Al insertar otro elemento en un ABB no vació, devuelve el mismo ABB.");
+		abb_insertar(nuevo_abb, elemento_5) == nuevo_abb,
+		"Al insertar otro elemento mayor en un ABB no vacío, devuelve el mismo ABB.");
 	pa2m_afirmar(
 		abb_tamanio(nuevo_abb) == 5,
-		"Al insertar en un ABB no vació se actualiza correctamente el tamaño del ABB.");
-	pa2m_afirmar(abb_buscar(nuevo_abb, elemento_4) == elemento_4,
-		     "El elemento efectivamente esta insertado en el ABB.");
+		"Al insertar en un ABB no vacío se actualiza correctamente el tamaño del ABB.");
+	pa2m_afirmar(
+		abb_buscar(nuevo_abb, elemento_5) == elemento_5,
+		"El elemento efectivamente está insertado en la derecha del ABB.");
+
+	pa2m_afirmar(
+		abb_insertar(nuevo_abb, elemento_6) == nuevo_abb,
+		"Al insertar otro elemento menor en un ABB no vacío, devuelve el mismo ABB.");
+	pa2m_afirmar(
+		abb_tamanio(nuevo_abb) == 6,
+		"Al insertar en un ABB no vacío se actualiza correctamente el tamaño del ABB.");
+	pa2m_afirmar(
+		abb_buscar(nuevo_abb, elemento_6) == elemento_6,
+		"El elemento efectivamente está insertado en la izquierda del ABB.");
 
 	pa2m_afirmar(
 		abb_con_cada_elemento(nuevo_abb, PREORDEN, imprimir_recorrido,
@@ -279,9 +291,21 @@ void abb_con_cada_elemento_recorridos()
 	abb_insertar(nuevo_abb, elemento_5);
 	abb_insertar(nuevo_abb, elemento_6);
 
-	pa2m_afirmar(abb_con_cada_elemento(NULL, INORDEN, imprimir_recorrido,
-					   NULL) == 0,
-		     "Al pasarle un ABB NULL, devuelve 0");
+	pa2m_afirmar(
+		abb_con_cada_elemento(NULL, INORDEN, imprimir_recorrido,
+				      NULL) == 0,
+		"Al pasarle un ABB NULL con un recorrido INORDEN, devuelve 0");
+
+	pa2m_afirmar(
+		abb_con_cada_elemento(NULL, PREORDEN, imprimir_recorrido,
+				      NULL) == 0,
+		"Al pasarle un ABB NULL con un recorrido PREORDEN, devuelve 0");
+
+	pa2m_afirmar(
+		abb_con_cada_elemento(NULL, POSTORDEN, imprimir_recorrido,
+				      NULL) == 0,
+		"Al pasarle un ABB NULL con un recorrido POSTORDEN, devuelve 0");
+
 	pa2m_afirmar(abb_con_cada_elemento(nuevo_abb, INORDEN, NULL, NULL) == 0,
 		     "Al pasarle una función NULL, devuelve 0");
 
@@ -301,7 +325,17 @@ void abb_con_cada_elemento_recorridos()
 	pa2m_afirmar(
 		abb_con_cada_elemento(nuevo_abb, INORDEN, es_igual,
 				      elemento_4) == 4,
-		"Se recorren todos los elementos hasta la condición de corte.");
+		"Se recorren todos los elementos INORDEN hasta la condición de corte.");
+
+	pa2m_afirmar(
+		abb_con_cada_elemento(nuevo_abb, PREORDEN, es_igual,
+				      elemento_4) == 4,
+		"Se recorren todos los elementos PREORDEN hasta la condición de corte.");
+
+	pa2m_afirmar(
+		abb_con_cada_elemento(nuevo_abb, POSTORDEN, es_igual,
+				      elemento_4) == 3,
+		"Se recorren todos los elementos POSTORDEN hasta la condición de corte.");
 
 	abb_quitar(nuevo_abb, elemento_3);
 	pa2m_afirmar(
@@ -322,7 +356,15 @@ void abb_con_cada_elemento_recorridos()
 	pa2m_afirmar(
 		abb_con_cada_elemento(nuevo_abb, INORDEN, imprimir_recorrido,
 				      NULL) == abb_tamanio(nuevo_abb),
-		"Se recorren todos los elementos luego de insertar un elemento y coincide el tamaño del árbol");
+		"Se recorren INORDER todos los elementos luego de insertar un elemento y coincide el tamaño del árbol");
+	pa2m_afirmar(
+		abb_con_cada_elemento(nuevo_abb, PREORDEN, imprimir_recorrido,
+				      NULL) == abb_tamanio(nuevo_abb),
+		"Se recorren PREORDEN todos los elementos luego de insertar un elemento y coincide el tamaño del árbol");
+	pa2m_afirmar(
+		abb_con_cada_elemento(nuevo_abb, POSTORDEN, imprimir_recorrido,
+				      NULL) == abb_tamanio(nuevo_abb),
+		"Se recorren POSTORDEN todos los elementos luego de insertar un elemento y coincide el tamaño del árbol");
 
 	abb_destruir(nuevo_abb);
 }
